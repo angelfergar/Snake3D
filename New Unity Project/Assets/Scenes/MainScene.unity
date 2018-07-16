@@ -447,7 +447,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43378f13c31b94549b63af23122fa463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0.5
+  rotationSpeed: 90
+  minDistance: 0.25
+  BodyParts:
+  - {fileID: 712780696}
+  colaPrefab: {fileID: 0}
+  beginSize: 3
 --- !u!54 &712780698
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -501,6 +507,11 @@ Prefab:
     - target: {fileID: 4848995301213444, guid: 1e890eeb352aefb479dd462569274081, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 65998100908224180, guid: 1e890eeb352aefb479dd462569274081,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e890eeb352aefb479dd462569274081, type: 2}
