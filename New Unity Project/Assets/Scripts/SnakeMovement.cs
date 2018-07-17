@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class SnakeMovement : MonoBehaviour {
 
-   //Variables públicas
+    [Header("Game Controller")]
+
+    public GameObject gameControllerObject; //Variable para llamar al GameController
+    private GameController myGameController; //Con esto sacaremos los componentes del GameController
+
+    [Header("Movement")]
+
+    //Variables públicas
     public float speed;//velocidad del snake
 	public float minDistance;
 	public List<Transform> BodyParts = new List<Transform>();
@@ -18,8 +25,11 @@ public class SnakeMovement : MonoBehaviour {
 	private Transform currentBodyPart;
 	private Transform prevBodyPart;
 
+
 	void Start () 
 	{
+        myGameController = gameControllerObject.GetComponent<GameController>();
+
 		for (int i = 0; i < beginSize - 1 ; i++)
 		{
 			AddBodyPart();
@@ -28,17 +38,22 @@ public class SnakeMovement : MonoBehaviour {
 
 	void Update()
 	{
-		Move();
+        if (myGameController.empezado)
+        {
+            Move();
 
-		if(Input.GetKey(KeyCode.Q))
-		{
-			AddBodyPart();
-		}
+            if (Input.GetKey(KeyCode.Q))
+            {
+                AddBodyPart();
+            }
+
+        }
 	}
 
 	//Genera el movimiento del personaje con los inputs del teclado...
 	void Move()
 	{
+
 		//El objeto siempre va hacia delante
 		BodyParts[0].Translate(BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
 
