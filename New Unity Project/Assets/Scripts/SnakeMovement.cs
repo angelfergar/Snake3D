@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SnakeMovement : MonoBehaviour {
 
-   //velocidad de movimiento del snake
-    public float speed;
-	public float rotationSpeed;
+   //Variables públicas
+    public float speed;//velocidad del snake
 	public float minDistance;
 	public List<Transform> BodyParts = new List<Transform>();
 	public GameObject colaPrefab;
 	public int beginSize;
 	
+	//Variables privadas
     //Define el movimiento del player en base a las teclas que se pulsen
     private Vector3 movement; 
 	private float distance;
@@ -39,44 +39,51 @@ public class SnakeMovement : MonoBehaviour {
 	//Genera el movimiento del personaje con los inputs del teclado...
 	void Move()
 	{
-		//Velocidad actual del snake	
-		float currentSpeed= speed;
-
-		//esperando una translación o rotación del snake.
-		if(Input.GetKey(KeyCode.W))
-		
-			currentSpeed*=2;
-
-		BodyParts[0].Translate(BodyParts[0].forward*currentSpeed*Time.smoothDeltaTime,Space.World);
-		
-		if(Input.GetAxis("Horizontal")!=0)
-		
-		BodyParts[0].Rotate(Vector3.up * rotationSpeed *Time.deltaTime*Input.GetAxis("Horizontal"));
+		//El objeto siempre va hacia delante
+		BodyParts[0].Translate(BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
 
 
-		//empezamos a contar los objetos que siguen a la cabeza
-		for (int i = 1; i < BodyParts.Count; i++)
+		//Movimiento evitando diagonales
+		if(Input.GetKey(KeyCode.A))
 		{
-			currentBodyPart=BodyParts[i];
-			prevBodyPart= BodyParts[i-1];
-
-			//distancia entre las dos partes del cuerpo
-			distance= Vector3.Distance(prevBodyPart.position, currentBodyPart.position);
-
-			Vector3 newPos= prevBodyPart.position;
-
-			newPos.y= BodyParts[0].position.y;
-
-			float T= Time.deltaTime * distance/minDistance*currentSpeed;
-			//evitar el colapso de objetos
-			if(T>0.5f)
-			{
-				T=0.5f;
-				currentBodyPart.position = Vector3.Slerp(currentBodyPart.position,newPos,T);
-				currentBodyPart.rotation = Quaternion.Slerp(currentBodyPart.rotation , prevBodyPart.rotation , T);
-			}
-
+       		 transform.eulerAngles = new Vector3(0,-90,0);
 		}
+		else if (Input.GetKey(KeyCode.W))
+		{
+			transform.eulerAngles = new Vector3(0,0,0);
+		}
+		else if (Input.GetKey(KeyCode.D))
+		{
+			transform.eulerAngles = new Vector3(0,90,0);
+		}
+		else if (Input.GetKey(KeyCode.S))
+		{
+			transform.eulerAngles = new Vector3(0,180,0);
+		}
+		
+		//Empezamos a contar los objetos que siguen a la cabeza
+		// for (int i = 1; i < BodyParts.Count; i++)
+		// {
+		// 	currentBodyPart=BodyParts[i];
+		// 	prevBodyPart= BodyParts[i-1];
+
+		// 	//distancia entre las dos partes del cuerpo
+		// 	distance= Vector3.Distance(prevBodyPart.position, currentBodyPart.position);
+
+		// 	Vector3 newPos= prevBodyPart.position;
+
+		// 	newPos.y= BodyParts[0].position.y;
+
+		// 	float T= Time.deltaTime * distance/minDistance*currentSpeed;
+		// 	//evitar el colapso de objetos
+		// 	if(T>0.5f)
+		// 	{
+		// 		T=0.5f;
+		// 		currentBodyPart.position = Vector3.Slerp(currentBodyPart.position,newPos,T);
+		// 		currentBodyPart.rotation = Quaternion.Slerp(currentBodyPart.rotation , prevBodyPart.rotation , T);
+		// 	}
+
+		// }
 
 	}
 	
