@@ -150,4 +150,17 @@ public class SnakeMovement : MonoBehaviour {
 		}
 	}
 
+    //Detectar colisión con el pickup y que este se desactive y sume uno al conteo
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("PickUp"))
+        {
+            other.gameObject.SetActive(false);
+            myGameController.count = myGameController.count + 1;
+            myGameController.SetCountText();
+            
+        }
+    }
+
 }

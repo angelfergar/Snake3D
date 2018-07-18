@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour {
     public Text playText;
     public bool empezado;
     public Button playButton;
+    public int count; //Lo que vale cada PickUp
+    public Text countText;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +19,8 @@ public class GameController : MonoBehaviour {
         //Al pular el botón, empieza el juego
         Button btn1 = playButton.GetComponent<Button>();
         btn1.onClick.AddListener(StartGame);
+        count = 0;
+        SetCountText();
             
 
     }
@@ -30,5 +34,10 @@ public class GameController : MonoBehaviour {
     {
         empezado = true;
         playText.text = "";
+    }
+
+    public void SetCountText() //Para llevar la cuenta 
+    {
+        countText.text = count.ToString();
     }
 }
