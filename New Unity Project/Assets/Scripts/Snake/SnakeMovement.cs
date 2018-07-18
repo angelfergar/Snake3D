@@ -13,6 +13,8 @@ public class SnakeMovement : MonoBehaviour {
 
     //Variables públicas
     public float speed;//velocidad del snake
+
+	[Header("Body")]
 	public float minDistance;
 	public List<Transform> BodyParts = new List<Transform>();
 	public GameObject colaPrefab;
@@ -20,11 +22,11 @@ public class SnakeMovement : MonoBehaviour {
 	
 	//Variables privadas
     //Define el movimiento del player en base a las teclas que se pulsen
-    private Vector3 movement; 
-	private float distance;
 	private Transform currentBodyPart;
 	private Transform prevBodyPart;
 
+	// grados del objeto
+	private int x=0,y=0,z=0;
 
 	void Start () 
 	{
@@ -38,67 +40,84 @@ public class SnakeMovement : MonoBehaviour {
 
 	void Update()
 	{
+		Debug.Log("plano actual: "+CaraController.currentPlane);
         if (myGameController.empezado)
         {
-            Move();
-
-            if (Input.GetKey(KeyCode.Q))
-            {
-                AddBodyPart();
-            }
+            Move(CaraController.currentPlane);
 
         }
+		changePlane(CaraController.currentPlane);
+
+		// if(CaraController.currentPlane.Equals("Plane"))
+		// {
+		// 	changePlane(CaraController.currentPlane);
+		// }
+
 	}
 
 	//Genera el movimiento del personaje con los inputs del teclado...
-	void Move()
+	void Move(string currentPlane)
 	{
-
 		//El objeto siempre va hacia delante
 		BodyParts[0].Translate(BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
 
-
-		//Movimiento evitando diagonales
+		//Movimiento evitando diagonales plane 1
 		if(Input.GetKey(KeyCode.A))
 		{
-       		 transform.eulerAngles = new Vector3(0,-90,0);
+			switch(currentPlane)
+			{
+				case "Plane": 
+					y=-90;
+					break;
+
+				case "Plane_2": 
+					x=90;
+					break;
+			}
+       		transform.eulerAngles = new Vector3(x,y,z);
 		}
 		else if (Input.GetKey(KeyCode.W))
 		{
-			transform.eulerAngles = new Vector3(0,0,0);
+			switch(currentPlane)
+			{
+				case "Plane": 
+					y=0;
+					break;
+
+				case "Plane_2": 
+					x=0;
+					break;
+			}
+			transform.eulerAngles = new Vector3(x,y,z);
 		}
 		else if (Input.GetKey(KeyCode.D))
 		{
-			transform.eulerAngles = new Vector3(0,90,0);
+			switch(currentPlane)
+			{
+				case "Plane": 
+					y=90;
+					break;
+
+				case "Plane_2": 
+					x=-90;
+					break;
+			}
+			transform.eulerAngles = new Vector3(x,y,z);
 		}
 		else if (Input.GetKey(KeyCode.S))
 		{
-			transform.eulerAngles = new Vector3(0,180,0);
+			switch(currentPlane)
+			{
+				case "Plane": 
+					y=180;
+					break;
+
+				case "Plane_2": 
+					x=-180;
+					break;
+			}
+			transform.eulerAngles = new Vector3(x,y,z);
 		}
-		
-		//Empezamos a contar los objetos que siguen a la cabeza
-		// for (int i = 1; i < BodyParts.Count; i++)
-		// {
-		// 	currentBodyPart=BodyParts[i];
-		// 	prevBodyPart= BodyParts[i-1];
-
-		// 	//distancia entre las dos partes del cuerpo
-		// 	distance= Vector3.Distance(prevBodyPart.position, currentBodyPart.position);
-
-		// 	Vector3 newPos= prevBodyPart.position;
-
-		// 	newPos.y= BodyParts[0].position.y;
-
-		// 	float T= Time.deltaTime * distance/minDistance*currentSpeed;
-		// 	//evitar el colapso de objetos
-		// 	if(T>0.5f)
-		// 	{
-		// 		T=0.5f;
-		// 		currentBodyPart.position = Vector3.Slerp(currentBodyPart.position,newPos,T);
-		// 		currentBodyPart.rotation = Quaternion.Slerp(currentBodyPart.rotation , prevBodyPart.rotation , T);
-		// 	}
-
-		// }
 
 	}
 	
@@ -110,5 +129,25 @@ public class SnakeMovement : MonoBehaviour {
 		BodyParts.Add(newPart);
 	}
 
+	private void changePlane(string plane)
+	{
+		switch(plane)
+		{
+			case "Plane": 
+				x=0;
+				transform.eulerAngles = new Vector3(x,y,z);
+				break;
+
+			case "Plane_2": 
+				x=90;
+				transform.eulerAngles = new Vector3(x,y,z);
+				break;
+
+			default: 
+				x=0;
+				break;
+
+		}
+	}
 
 }
