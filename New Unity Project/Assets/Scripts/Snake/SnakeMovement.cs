@@ -24,6 +24,8 @@ public class SnakeMovement : MonoBehaviour {
     //Define el movimiento del player en base a las teclas que se pulsen
 	private Transform currentBodyPart;
 	private Transform prevBodyPart;
+	private string dir="";
+
 
 	// grados del objeto
 	private int x=0,y=0,z=0;
@@ -40,83 +42,57 @@ public class SnakeMovement : MonoBehaviour {
 
 	void Update()
 	{
-		Debug.Log("plano actual: "+CaraController.currentPlane);
+		
         if (myGameController.empezado)
         {
-            Move(CaraController.currentPlane);
-
+            Move();
         }
-		changePlane(CaraController.currentPlane);
 
-		// if(CaraController.currentPlane.Equals("Plane"))
-		// {
-		// 	changePlane(CaraController.currentPlane);
-		// }
+			Debug.Log("exitPlane: "+CaraController.exitPlane);
+
+		//Se tiene que ejecutar una vez en el cambio de plano por lo tanto ponemos el currentPlane a ""
+		changePlane();
 
 	}
 
 	//Genera el movimiento del personaje con los inputs del teclado...
-	void Move(string currentPlane)
+	void Move()
 	{
-		//El objeto siempre va hacia delante
-		BodyParts[0].Translate(BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
-
+		
 		//Movimiento evitando diagonales plane 1
 		if(Input.GetKey(KeyCode.A))
 		{
-			switch(currentPlane)
-			{
-				case "Plane": 
-					y=-90;
-					break;
-
-				case "Plane_2": 
-					x=90;
-					break;
-			}
-       		transform.eulerAngles = new Vector3(x,y,z);
-		}
-		else if (Input.GetKey(KeyCode.W))
-		{
-			switch(currentPlane)
-			{
-				case "Plane": 
-					y=0;
-					break;
-
-				case "Plane_2": 
-					x=0;
-					break;
-			}
-			transform.eulerAngles = new Vector3(x,y,z);
+			dir="left";
 		}
 		else if (Input.GetKey(KeyCode.D))
 		{
-			switch(currentPlane)
-			{
-				case "Plane": 
-					y=90;
-					break;
-
-				case "Plane_2": 
-					x=-90;
-					break;
-			}
-			transform.eulerAngles = new Vector3(x,y,z);
+			dir="right";
+		}
+		else if (Input.GetKey(KeyCode.W))
+		{
+			dir="forward";
 		}
 		else if (Input.GetKey(KeyCode.S))
 		{
-			switch(currentPlane)
-			{
-				case "Plane": 
-					y=180;
-					break;
-
-				case "Plane_2": 
-					x=-180;
-					break;
-			}
-			transform.eulerAngles = new Vector3(x,y,z);
+			dir="behind";
+		}
+		switch(dir)
+		{
+			case "forward":
+				transform.Translate( BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+			break;
+			case "behind":
+				transform.Translate(-BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+			break;
+			case "left":
+				transform.Translate(-BodyParts[0].right*speed*Time.smoothDeltaTime,Space.World);
+			break;
+			case "right":
+				transform.Translate( BodyParts[0].right*speed*Time.smoothDeltaTime,Space.World);
+			break;
+			default:
+				transform.Translate( BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+			break;
 		}
 
 	}
@@ -129,29 +105,34 @@ public class SnakeMovement : MonoBehaviour {
 		BodyParts.Add(newPart);
 	}
 
-	private void changePlane(string plane)
+	private void changePlane()
 	{
-		switch(plane)
+		
+		switch(CaraController.exitToEnter)
 		{
-			case "Plane": 
-				x=0;
-				transform.eulerAngles = new Vector3(x,y,z);
-				break;
-
-			case "Plane_2": 
+			//PLANO MAIN
+			case "Plane_mainToPlane_s":
+				x=-90;
+			break;
+			case "Plane_mainToPlane_w":
 				x=90;
-				transform.eulerAngles = new Vector3(x,y,z);
-				break;
-
-			default: 
-				x=0;
-				break;
+			break;
+			case "Plane_mainToPlane_a":
+				z=90;
+			break;
+			case "Plane_mainToPlane_d":
+				z=-90;
+			break;
 
 		}
+
+		//modificamos la orientación
+		CaraController.exitPlane="";
+		transform.eulerAngles = new Vector3(x,y,z);
+
 	}
 
     //Detectar colisión con el pickup y que este se desactive y sume uno al conteo
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("PickUp"))
