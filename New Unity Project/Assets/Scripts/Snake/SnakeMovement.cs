@@ -48,8 +48,6 @@ public class SnakeMovement : MonoBehaviour {
             Move();
         }
 
-			Debug.Log("exitPlane: "+CaraController.exitPlane);
-
 		//Se tiene que ejecutar una vez en el cambio de plano por lo tanto ponemos el currentPlane a ""
 		changePlane();
 
@@ -108,28 +106,23 @@ public class SnakeMovement : MonoBehaviour {
 	private void changePlane()
 	{
 		
-		switch(CaraController.exitToEnter)
+		switch(SwitchPlane.exitToEnter)
 		{
 			//PLANO MAIN
-			case "Plane_mainToPlane_s":
-				x=-90;
-			break;
-			case "Plane_mainToPlane_w":
-				x=90;
-			break;
-			case "Plane_mainToPlane_a":
-				z=90;
-			break;
-			case "Plane_mainToPlane_d":
-				z=-90;
-			break;
+			case "Plane_mainToPlane_s":x=-90;break;case "Plane_mainToPlane_w":x=90;break;
+			case "Plane_mainToPlane_a":z=90;break;case "Plane_mainToPlane_d":z=-90;break;
 
+			//PLANO W
+			case "Plane_wToPlane_main":x=0;break;
+			//PLANO A
+			case "Plane_aToPlane_main":z=0;break;
+			//PLANO S
+			case "Plane_sToPlane_main":x=0;break;
+			//PLANO D
+			case "Plane_dToPlane_main":z=0;break;
 		}
-
-		//modificamos la orientación
-		CaraController.exitPlane="";
 		transform.eulerAngles = new Vector3(x,y,z);
-
+		
 	}
 
     //Detectar colisión con el pickup y que este se desactive y sume uno al conteo
