@@ -135,6 +135,10 @@ public class SnakeMovement : MonoBehaviour {
             myGameController.SetCountText();
             
         }
+        if (other.gameObject.CompareTag("Muerte"))
+        {
+            myGameController.Dead();
+        }
     }
 
 }
