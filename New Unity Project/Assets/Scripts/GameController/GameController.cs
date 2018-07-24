@@ -15,11 +15,7 @@ public class GameController : MonoBehaviour {
     public Button pauseButton;
     public Text pauseText;
     public Button resumeButton;
-    public Text restartText;
     public Button restartButton;
-    public Text scoreText;
-    public Text finalCountText;
-    public Image cubeScore;
 
 	// Use this for initialization
 	void Start () {
@@ -35,14 +31,8 @@ public class GameController : MonoBehaviour {
         btn3.onClick.AddListener(ResumeGame);
         btn4.onClick.AddListener(RestartGame);
         //Estado inicial
-        cubeScore.gameObject.SetActive(false);
         playText.text = "PLAY";
-        countText.gameObject.SetActive(false);
         pauseText.text = "";
-        scoreText.text = "";
-        finalCountText.text = "";
-        restartText.text = "";
-        playButton.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(false);
         resumeButton.gameObject.SetActive(false);
         pauseButton.gameObject.SetActive(false);
@@ -63,9 +53,7 @@ public class GameController : MonoBehaviour {
     {
         empezado = true;
         playText.text = "";
-        countText.gameObject.SetActive(true);
         pauseButton.gameObject.SetActive(true);
-        cubeScore.gameObject.SetActive(true);
         
         
     }
@@ -82,7 +70,6 @@ public class GameController : MonoBehaviour {
     {
         Time.timeScale = 0.0f;
         pauseText.text = "PAUSE";
-        playButton.gameObject.SetActive(false);
         resumeButton.gameObject.SetActive(true);
         pauseButton.gameObject.SetActive(false);
 
@@ -95,12 +82,6 @@ public class GameController : MonoBehaviour {
 
     public void Dead()
     {
-        restartText.text = "RESTART";
-        scoreText.text = "YOUR SCORE";
-        finalCountText.text = count.ToString();
-        countText.text = "";
-        playButton.gameObject.SetActive(false);
-        cubeScore.gameObject.SetActive(false);
         pauseButton.gameObject.SetActive(false);
         resumeButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(true);
