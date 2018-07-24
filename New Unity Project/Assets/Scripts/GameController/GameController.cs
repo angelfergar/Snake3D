@@ -20,6 +20,10 @@ public class GameController : MonoBehaviour {
     public Text scoreText;
     public Text finalCountText;
     public Image cubeScore;
+    [Header("Spawn")]
+    public Vector3 center;
+    public Vector3 size;
+    public GameObject pickUp;
 
     // Use this for initialization
     void Start () {
@@ -56,12 +60,16 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(Input.GetKey(KeyCode.Q))
+        {
+            SpawnPickUp();
+        }
 	}
 
     void StartGame()
     {
         empezado = true;
+        SpawnPickUp();
         Time.timeScale = 1.0f;
         playText.text = "";
         playButton.gameObject.SetActive(false);
@@ -116,4 +124,20 @@ public class GameController : MonoBehaviour {
         
         SceneManager.LoadScene("MainScene"); //Carga de nuevo la escena principal
     }
+
+    public void SpawnPickUp()
+    {
+        Vector3 pos = center + new Vector3(Random.Range(-size.x/2, size.x/2), Random.Range(-size.y / 2, size.y / 2), Random.Range(-size.z/2, size.z / 2));
+
+        Instantiate(pickUp, pos, Quaternion.identity);
+        Debug.Log(pos);
+    }
+
+    private void OnDrawGizmosSelected() //Área en la que pueden spawnear los PickUp
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawCube(center,size);
+    }
+
+    
 }
