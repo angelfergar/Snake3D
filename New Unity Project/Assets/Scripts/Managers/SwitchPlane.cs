@@ -173,7 +173,7 @@ public class SwitchPlane : MonoBehaviour
 				}
 				else if(comePlane.Equals("Plane_s"))
 				{
-					planeToChange="Plane_a";
+					planeToChange="Plane_d";
 				}
 
 			break;

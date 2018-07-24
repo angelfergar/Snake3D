@@ -31,9 +31,10 @@ public class CaraController : MonoBehaviour
 
 	void OnTriggerEnter(Collider o) {
 
-	if(o.gameObject == snake){
-		enterPlane= this.name;
-	}
+		if(o.gameObject == snake){
+			enterPlane= this.name;
+			Debug.Log("Enter"+enterPlane);
+		}
 		
 	}
 	
