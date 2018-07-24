@@ -7,10 +7,12 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
     public GameObject snake;
-    public Text playText;
     public bool empezado;
+    public int count;
+    [Header("UI")]
+    public Text playText;
     public Button playButton;
-    public int count; //Lo que vale cada PickUp
+    //Lo que vale cada PickUp
     public Text countText;
     public Button pauseButton;
     public Text pauseText;
@@ -21,9 +23,24 @@ public class GameController : MonoBehaviour {
     public Text finalCountText;
     public Image cubeScore;
     [Header("Spawn")]
+    //Planos de Spawn
     public Vector3 center;
     public Vector3 size;
+    public Vector3 center02;
+    public Vector3 size02;
+    public Vector3 center03;
+    public Vector3 size03;
+    public Vector3 center04;
+    public Vector3 size04;
+    public Vector3 center05;
+    public Vector3 size05;
+    public Vector3 center06;
+    public Vector3 size06;
+    private Vector3[] spawnPos;
+    private int spawnPosition;
+    //Objeto Spawn
     public GameObject pickUp;
+    public int numPickUp;
 
     // Use this for initialization
     void Start () {
@@ -52,15 +69,15 @@ public class GameController : MonoBehaviour {
         pauseButton.gameObject.SetActive(false);
         count = 0;
         SetCountText();
-      
-        
-            
+        numPickUp = 0;
+
+       
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKey(KeyCode.Q))
+		if(numPickUp == 1)
         {
             SpawnPickUp();
         }
@@ -69,7 +86,7 @@ public class GameController : MonoBehaviour {
     void StartGame()
     {
         empezado = true;
-        SpawnPickUp();
+        numPickUp = 1;
         Time.timeScale = 1.0f;
         playText.text = "";
         playButton.gameObject.SetActive(false);
@@ -127,16 +144,31 @@ public class GameController : MonoBehaviour {
 
     public void SpawnPickUp()
     {
-        Vector3 pos = center + new Vector3(Random.Range(-size.x/2, size.x/2), Random.Range(-size.y / 2, size.y / 2), Random.Range(-size.z/2, size.z / 2));
+        //Definimos los valores de los Spawn Points
+        spawnPosition = Random.Range(0, 5);
+        spawnPos = new Vector3[6];
+        spawnPos[0] = center + new Vector3(Random.Range(-size.x / 2, size.x / 2), Random.Range(-size.y / 2, size.y / 2), Random.Range(-size.z / 2, size.z / 2));
+        spawnPos[1] = center02 + new Vector3(Random.Range(-size02.x / 2, size02.x / 2), Random.Range(-size02.y / 2, size02.y / 2), Random.Range(-size02.z / 2, size02.z / 2));
+        spawnPos[2] = center03 + new Vector3(Random.Range(-size03.x / 2, size03.x / 2), Random.Range(-size03.y / 2, size03.y / 2), Random.Range(-size03.z / 2, size03.z / 2));
+        spawnPos[3] = center04 + new Vector3(Random.Range(-size04.x / 2, size04.x / 2), Random.Range(-size04.y / 2, size04.y / 2), Random.Range(-size04.z / 2, size04.z / 2));
+        spawnPos[4] = center05 + new Vector3(Random.Range(-size05.x / 2, size05.x / 2), Random.Range(-size05.y / 2, size05.y / 2), Random.Range(-size05.z / 2, size05.z / 2));
+        spawnPos[5] = center06 + new Vector3(Random.Range(-size06.x / 2, size06.x / 2), Random.Range(-size06.y / 2, size06.y / 2), Random.Range(-size06.z / 2, size06.z / 2));
 
-        Instantiate(pickUp, pos, Quaternion.identity);
-        Debug.Log(pos);
+        Instantiate(pickUp,(spawnPos[spawnPosition]), Quaternion.identity);
+        numPickUp = numPickUp + 1;
+        Debug.Log(numPickUp);
+        Debug.Log(spawnPosition);
     }
 
     private void OnDrawGizmosSelected() //Área en la que pueden spawnear los PickUp
     {
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawCube(center,size);
+        Gizmos.DrawCube(center02, size02);
+        Gizmos.DrawCube(center03, size03);
+        Gizmos.DrawCube(center04, size04);
+        Gizmos.DrawCube(center05, size05);
+        Gizmos.DrawCube(center06, size06);
     }
 
     

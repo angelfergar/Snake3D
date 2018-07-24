@@ -247,9 +247,10 @@ public class SnakeMovement : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("PickUp"))
         {
-            other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
             myGameController.count = myGameController.count + 1;
             myGameController.SetCountText();
+            myGameController.numPickUp = myGameController.numPickUp -1;
             
         }
         if (other.gameObject.CompareTag("Muerte"))
