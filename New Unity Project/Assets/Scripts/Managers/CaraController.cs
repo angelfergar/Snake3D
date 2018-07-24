@@ -8,6 +8,9 @@ public class CaraController : MonoBehaviour
 	GameObject snake;
 	BoxCollider faceCollider;
 	public static string exitPlane = ""; //plano en el que se encuentra
+	public static string enterPlane = ""; //plano en el que se encuentra
+	public static string exitToEnter = ""; //plano en el que se encuentra
+
 
 	void Start () 
 	{
@@ -20,10 +23,19 @@ public class CaraController : MonoBehaviour
 
 		if(o.gameObject == snake){
 			exitPlane= this.name;
+			exitToEnter= CaraController.exitPlane+"To"+ SwitchPlane.planeToChange;
+			Debug.Log("Transición"+exitToEnter);
 		}
 		
 	}
 
+	void OnTriggerEnter(Collider o) {
 
+	if(o.gameObject == snake){
+		enterPlane= this.name;
+	}
+		
+	}
+	
 
 }

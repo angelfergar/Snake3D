@@ -106,20 +106,28 @@ public class SnakeMovement : MonoBehaviour {
 	private void changePlane()
 	{
 		
-		switch(SwitchPlane.exitToEnter)
+		switch(CaraController.exitToEnter)
 		{
 			//PLANO MAIN
 			case "Plane_mainToPlane_s":x=-90;break;case "Plane_mainToPlane_w":x=90;break;
 			case "Plane_mainToPlane_a":z=90;break;case "Plane_mainToPlane_d":z=-90;break;
 
 			//PLANO W
-			case "Plane_wToPlane_main":x=0;break;
+			case "Plane_wToPlane_main":x=0;break;case "Plane_wToPlane_mainR":x=180;break;
+			case "Plane_wToPlane_a":x=90; z=90;break;case "Plane_wToPlane_d":x=90;z=-90;;break;
 			//PLANO A
-			case "Plane_aToPlane_main":z=0;break;
+			case "Plane_aToPlane_main":x=0;z=0;break;case "Plane_aToPlane_mainR":z=180;break;
+			case "Plane_aToPlane_w":x=90;z=0;break;case "Plane_aToPlane_s":x=-90; z=0;break;
 			//PLANO S
-			case "Plane_sToPlane_main":x=0;break;
+			case "Plane_sToPlane_main":x=0;break;case "Plane_sToPlane_mainR":x=180;break;
+			case "Plane_sToPlane_a":x=0;z=90;break;case "Plane_sToPlane_d":x=0;z=-90;break;
 			//PLANO D
-			case "Plane_dToPlane_main":z=0;break;
+			case "Plane_dToPlane_main":x=0;z=0;break;case "Plane_dToPlane_mainR":z=180;break;
+			case "Plane_dToPlane_w":x=0; z=90;break;case "Plane_dToPlane_s":x=-90; z=0;;break;
+
+			//PLANO REVERSE
+			case "Plane_mainRToPlane_s":x=-90;break;case "Plane_mainRToPlane_w":x=90;break;
+			case "Plane_mainRToPlane_a":z=90;break;case "Plane_mainRToPlane_d":z=-90;break;
 		}
 		transform.eulerAngles = new Vector3(x,y,z);
 		

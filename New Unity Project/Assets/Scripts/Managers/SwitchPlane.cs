@@ -7,8 +7,8 @@ public class SwitchPlane : MonoBehaviour
 	//Instanciamos el objeto player(snake)
 	GameObject snake;
 	BoxCollider faceCollider;
-	public static string exitToEnter = ""; //plano en el que se encuentra
-	private string planeToChange="" ;
+	public static string planeToChange="" ;
+	private string comePlane="";
 
 	void Start () 
 	{
@@ -17,82 +17,167 @@ public class SwitchPlane : MonoBehaviour
 	}
 	
 	//cuando el objeto sale del area de influencia, es decir, de esta cara avisa al snake
-	void OnTriggerStay(Collider o) {
+	void OnTriggerEnter(Collider o) {
 		if(o.gameObject == snake){
 		
-		howPlaneChange();
-		exitToEnter= CaraController.exitPlane+"To"+planeToChange;
-
-		Debug.Log("Exit To enter: "+exitToEnter);
+			howPlaneChange();
 			
 		}
 	}
 
 	private void howPlaneChange()
 	{
+		comePlane=CaraController.enterPlane;
+
 		switch (this.name)
 		{
 			
-			case "Switch_plane":
+			case "Switch_m<->s":
 
-				planeToChange="Plane_s";
-				this.name="Switch_plane-";
-
-
-			break;
-			case "Switch_plane-":
-
-				planeToChange="Plane_main";
-				this.name="Switch_plane";
-
+				if(comePlane.Equals("Plane_main"))
+				{
+					planeToChange="Plane_s";
+				}
+				else if(comePlane.Equals("Plane_s"))
+				{
+					planeToChange="Plane_main";
+				}
 
 			break;
-			case "Switch_plane (1)":
+			case "Switch_m<->w":
 
-				planeToChange="Plane_w";
-				this.name="Switch_plane (1)-";
-
-
-			break;
-			case "Switch_plane (1)-":
-
-				planeToChange="Plane_main";
-				this.name="Switch_plane (1)";
-
-
-			break;
-			case "Switch_plane (2)":
-
-				planeToChange="Plane_d";
-				this.name="Switch_plane (2)-";
-
-
-			break;
-			case "Switch_plane (2)-":
-
-				planeToChange="Plane_main";
-				this.name="Switch_plane (2)";
-
+				if(comePlane.Equals("Plane_main"))
+				{
+					planeToChange="Plane_w";
+				}
+				else if(comePlane.Equals("Plane_w"))
+				{
+					planeToChange="Plane_main";
+				}
 
 			break;
 
-			case "Switch_plane (3)":
+			case "Switch_m<->d":
 
-				planeToChange="Plane_a";
-				this.name="Switch_plane (3)-";
-
-
-			break;
-			case "Switch_plane (3)-":
-
-				planeToChange="Plane_main";
-				this.name="Switch_plane (3)";
-
+				if(comePlane.Equals("Plane_main"))
+				{
+					planeToChange="Plane_d";
+				}
+				else if(comePlane.Equals("Plane_d"))
+				{
+					planeToChange="Plane_main";
+				}
 
 			break;
+			case "Switch_m<->a":
 
+				if(comePlane.Equals("Plane_main"))
+				{
+					planeToChange="Plane_a";
+				}
+				else if(comePlane.Equals("Plane_a"))
+				{
+					planeToChange="Plane_main";
+				}
 
-			
+			break;
+			case "Switch_s<->mR":
+
+				if(comePlane.Equals("Plane_s"))
+				{
+					planeToChange="Plane_mainR";
+				}
+				else if(comePlane.Equals("Plane_mainR"))
+				{
+					planeToChange="Plane_s";
+				}
+
+			break;
+			case "Switch_w<->mR":
+
+				if(comePlane.Equals("Plane_w"))
+				{
+					planeToChange="Plane_mainR";
+				}
+				else if(comePlane.Equals("Plane_mainR"))
+				{
+					planeToChange="Plane_w";
+				}
+
+			break;
+			case "Switch_d<->mR":
+
+				if(comePlane.Equals("Plane_d"))
+				{
+					planeToChange="Plane_mainR";
+				}
+				else if(comePlane.Equals("Plane_mainR"))
+				{
+					planeToChange="Plane_d";
+				}
+
+			break;
+			case "Switch_a<->mR":
+
+				if(comePlane.Equals("Plane_a"))
+				{
+					planeToChange="Plane_mainR";
+				}
+				else if(comePlane.Equals("Plane_mainR"))
+				{
+					planeToChange="Plane_a";
+				}
+
+			break;
+			case "Switch_w<->a":
+
+				if(comePlane.Equals("Plane_w"))
+				{
+					planeToChange="Plane_a";
+				}
+				else if(comePlane.Equals("Plane_a"))
+				{
+					planeToChange="Plane_w";
+				}
+
+			break;
+			case "Switch_w<->d":
+
+				if(comePlane.Equals("Plane_w"))
+				{
+					planeToChange="Plane_d";
+				}
+				else if(comePlane.Equals("Plane_d"))
+				{
+					planeToChange="Plane_w";
+				}
+
+			break;
+			case "Switch_a<->s":
+
+				if(comePlane.Equals("Plane_a"))
+				{
+					planeToChange="Plane_s";
+				}
+				else if(comePlane.Equals("Plane_s"))
+				{
+					planeToChange="Plane_a";
+				}
+
+			break;
+			case "Switch_d<->s":
+
+				if(comePlane.Equals("Plane_d"))
+				{
+					planeToChange="Plane_s";
+				}
+				else if(comePlane.Equals("Plane_s"))
+				{
+					planeToChange="Plane_a";
+				}
+
+			break;
+
 		}
 	}
 
