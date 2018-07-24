@@ -3073,9 +3073,20 @@ MonoBehaviour:
   scoreText: {fileID: 1009150479}
   finalCountText: {fileID: 2123660884}
   cubeScore: {fileID: 620928821}
-  center: {x: 0, y: 0, z: 0}
-  size: {x: 2.66, y: 2.66, z: 2.66}
+  center: {x: 0, y: 0, z: 1.33}
+  size: {x: 2.5, y: 2.5, z: 0}
+  center02: {x: 0, y: 0, z: -1.33}
+  size02: {x: 2.5, y: 2.5, z: 0}
+  center03: {x: 1.33, y: 0, z: 0}
+  size03: {x: 0, y: 2.5, z: 2.5}
+  center04: {x: -1.33, y: 0, z: 0}
+  size04: {x: 0, y: 2.5, z: 2.5}
+  center05: {x: 0, y: 1.33, z: 0}
+  size05: {x: 2.5, y: 0, z: 2.5}
+  center06: {x: 0, y: -1.33, z: 0}
+  size06: {x: 2.5, y: 0, z: 2.5}
   pickUp: {fileID: 1414219442640630, guid: 1e890eeb352aefb479dd462569274081, type: 2}
+  numPickUp: 0
 --- !u!4 &1642220145
 Transform:
   m_ObjectHideFlags: 0
