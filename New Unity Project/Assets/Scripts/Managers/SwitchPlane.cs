@@ -9,12 +9,16 @@ public class SwitchPlane : MonoBehaviour
 	BoxCollider faceCollider;
 	public static string planeToChange="" ;
 	private string comePlane="";
+    
 
-	void Start () 
+    void Start () 
 	{
 		snake = GameObject.FindGameObjectWithTag ("Player");
 		faceCollider=this.GetComponent<BoxCollider>();
-	}
+        
+        
+
+    }
 	
 	//cuando el objeto sale del area de influencia, es decir, de esta cara avisa al snake
 	void OnTriggerEnter(Collider o) {
@@ -28,8 +32,9 @@ public class SwitchPlane : MonoBehaviour
 	private void howPlaneChange()
 	{
 		comePlane=CaraController.enterPlane;
+        CameraMovement camara = GetComponent<CameraMovement>();
 
-		switch (this.name)
+        switch (this.name)
 		{
 			
 			case "Switch_m<->s":
@@ -62,7 +67,9 @@ public class SwitchPlane : MonoBehaviour
 				if(comePlane.Equals("Plane_main"))
 				{
 					planeToChange="Plane_d";
-				}
+                    camara.CameraUpToRight();
+
+                }
 				else if(comePlane.Equals("Plane_d"))
 				{
 					planeToChange="Plane_main";

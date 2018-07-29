@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
 
-    public GameObject reference;
-    private Vector3 offset;
-    
 
-	// Update is called once per frame
-	void Start () {
+    public GameObject referenceUp;
+    public Vector3 rotationUp;
+    public GameObject referenceRight;
+    public Vector3 rotationRight;
 
-        offset = transform.position - reference.transform.position;
-	}
 
-    private void LateUpdate() //Se ejecuta cada frame, pero una vez se han terminado todas las acciones de los Update
+    // Update is called once per frame
+    void Start()
     {
-        transform.position = reference.transform.position + offset; 
+
+        rotationUp = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(rotationUp);
+        transform.position = referenceUp.transform.position; 
+
     }
+
+
+    public void CameraUpToRight()
+    {
+        transform.position = referenceRight.transform.position;
+        transform.rotation = Quaternion.Euler(rotationRight);
+    }
+
 }

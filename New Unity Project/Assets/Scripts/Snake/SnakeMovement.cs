@@ -35,7 +35,7 @@ public class SnakeMovement : MonoBehaviour {
 	{
         myGameController = gameControllerObject.GetComponent<GameController>();
 
-		for (int i = 0; i < beginSize - 1 ; i++)
+        for (int i = 0; i < beginSize - 1 ; i++)
 		{
 			AddBodyPart();
 		}
