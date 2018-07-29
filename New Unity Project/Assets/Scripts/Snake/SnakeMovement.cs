@@ -15,19 +15,16 @@ public class SnakeMovement : MonoBehaviour {
     public float speed;//velocidad del snake
 
 	[Header("bodyParts")]
-	public List<Transform> bodyParts = new List<Transform>();
+	public List<GameObject> bodyParts = new List<GameObject>();
 	public GameObject bodyPartsPrefab;
 	public int beginSize;
 	public float disEntrabodyParts;
 	
 	//Variables privadas
     //Define el movimiento del player en base a las teclas que se pulsen
-	private Transform currentBodyPart;
-	private Transform prevBodyPart;
 	private string dir="";
 	private string orientation="main";
 	//comprobar si la posición del objeto 
-	private Vector3 posCurr;
 	private float x,y,z;
 	
 	void Start () 
@@ -181,76 +178,47 @@ public class SnakeMovement : MonoBehaviour {
 		switch(dir)
 		{
 			case "forward":
-				transform.Translate( bodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.forward*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "behind":
-				transform.Translate(-bodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate(-bodyParts[0].transform.forward*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "left":
-				transform.Translate(-bodyParts[0].right*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate(-bodyParts[0].transform.right*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "right":
-				transform.Translate( bodyParts[0].right*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.right*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "up":
-				transform.Translate( bodyParts[0].up*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.up*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "down":
-				transform.Translate(-bodyParts[0].up*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate(-bodyParts[0].transform.up*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			default:
-				transform.Translate( bodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.forward*speed*Time.smoothDeltaTime,Space.World);
 			break;
 		}	
 
+		//Movimiento de el body del snake 
+		for (int i = 1; i < bodyParts.Count; i++)
+		{
+			Vector3 prevPos= bodyParts[i-1].transform.position;
+			Vector3 currPos= bodyParts[i].transform.position;
 
+			float distancia= Vector3.Distance(prevPos,currPos);
+			//Si la distancia es mayor a la min distancia entre ambos objetos, movemos el objeto.
+			if(distancia>=disEntrabodyParts) 
+			bodyParts[i].transform.position= Vector3.MoveTowards(currPos,prevPos,speed*Time.smoothDeltaTime);
+		}
 	}
 	
 	//añadimos partes a la cola del snake
 	public void AddBodyPart()
 	{
-		Transform newPart;
-		posCurr= bodyParts[bodyParts.Count-1].position;
-		x= posCurr.x;
-		y= posCurr.y;
-		z= posCurr.z;
-	
-		//Comprobamos el plano y la translacción del objeto.
-		if(orientation.Equals("w")||orientation.Equals("s"))
-		{
-			if(dir.Equals("up")||dir.Equals("down"))
-			{
-				posCurr.y=disNegOrPos(y);
-			}	
-			if(dir.Equals("left")||dir.Equals("right"))
-			{
-				posCurr.x=disNegOrPos(x);
-			}	
-		}
-		else if(orientation.Equals("a")||orientation.Equals("d"))
-		{
-			if(dir.Equals("up")||dir.Equals("down"))
-			{
-				posCurr.y=disNegOrPos(y);
-			}	
-			if(dir.Equals("left")||dir.Equals("right"))
-			{
-				posCurr.z=disNegOrPos(z);
-			}	
-		}
-		else if(orientation.Equals("main"))
-		{
-			if(dir.Equals("forward")||dir.Equals("behind"))
-			{
-				posCurr.z=disNegOrPos(z);
-			}	
-			if(dir.Equals("left")||dir.Equals("right"))
-			{
-				disNegOrPos(x);
-			}	
-		}
-		//si la posición es negativa es +disEntrebodyParts si no es -disEntrebodyParts.
-		newPart=(Instantiate(bodyPartsPrefab,posCurr,bodyParts[bodyParts.Count-1].rotation) as GameObject).transform;
+		Vector3 posCurr= bodyParts[bodyParts.Count-1].transform.position;
+		// newPart=(Instantiate(bodyPartsPrefab,posCurr,bodyParts[bodyParts.Count-1].rotation) as GameObject).transform;
+		GameObject newPart=Instantiate(bodyPartsPrefab,posCurr,bodyParts[bodyParts.Count-1].transform.rotation);
 		// newPart.SetParent(transform);
 		bodyParts.Add(newPart);
 	}
@@ -284,15 +252,6 @@ public class SnakeMovement : MonoBehaviour {
 		
 	}
 
-	//comprobamos si se aplicara un offset de distancia negativo o positivo
-	private float disNegOrPos(float coor)
-	{
-		float coorRes;
-		if(coor<0){coorRes=coor+disEntrabodyParts;}else{coorRes=coor-disEntrabodyParts;}
-
-		return coorRes;
-
-	}
     //Detectar colisión con el pickup y que este se desactive y sume uno al conteo
     private void OnTriggerEnter(Collider other)
     {

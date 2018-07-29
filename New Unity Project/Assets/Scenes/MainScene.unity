@@ -1364,7 +1364,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 712780692}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -1404,11 +1404,11 @@ MonoBehaviour:
   gameControllerObject: {fileID: 1642220143}
   speed: 0.5
   bodyParts:
-  - {fileID: 712780696}
+  - {fileID: 712780692}
   bodyPartsPrefab: {fileID: 1320565469494918, guid: 3ef3b4f8345e39e4987f08dfff245d77,
     type: 2}
   beginSize: 0
-  disEntrabodyParts: 0.35
+  disEntrabodyParts: 0.3
 --- !u!54 &712780698
 Rigidbody:
   m_ObjectHideFlags: 0
