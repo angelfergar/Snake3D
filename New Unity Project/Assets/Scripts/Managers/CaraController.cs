@@ -24,7 +24,7 @@ public class CaraController : MonoBehaviour
 		if(o.gameObject == snake){
 			exitPlane= this.name;
 			exitToEnter= CaraController.exitPlane+"To"+ SwitchPlane.planeToChange;
-			Debug.Log("Transición"+exitToEnter);
+			// Debug.Log("Transición"+exitToEnter);
 		}
 		
 	}
@@ -33,7 +33,7 @@ public class CaraController : MonoBehaviour
 
 		if(o.gameObject == snake){
 			enterPlane= this.name;
-			Debug.Log("Enter"+enterPlane);
+			// Debug.Log("Enter"+enterPlane);
 		}
 		
 	}

@@ -14,23 +14,19 @@ public class SnakeMovement : MonoBehaviour {
     //Variables públicas
     public float speed;//velocidad del snake
 
-	[Header("Body")]
-	public float minDistance;
-	public List<Transform> BodyParts = new List<Transform>();
-	public GameObject colaPrefab;
+	[Header("bodyParts")]
+	public List<GameObject> bodyParts = new List<GameObject>();
+	public GameObject bodyPartsPrefab;
 	public int beginSize;
+	public float disEntrabodyParts;
 	
 	//Variables privadas
     //Define el movimiento del player en base a las teclas que se pulsen
-	private Transform currentBodyPart;
-	private Transform prevBodyPart;
 	private string dir="";
 	private string orientation="main";
-
-
-	// grados del objeto
-	private int x=0,y=0,z=0;
-
+	//comprobar si la posición del objeto 
+	private float x,y,z;
+	
 	void Start () 
 	{
         myGameController = gameControllerObject.GetComponent<GameController>();
@@ -51,6 +47,8 @@ public class SnakeMovement : MonoBehaviour {
 
 		//Se tiene que ejecutar una vez en el cambio de plano por lo tanto ponemos el currentPlane a ""
 		changePlane();
+
+		
 
 	}
 
@@ -180,41 +178,53 @@ public class SnakeMovement : MonoBehaviour {
 		switch(dir)
 		{
 			case "forward":
-				transform.Translate( BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.forward*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "behind":
-				transform.Translate(-BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate(-bodyParts[0].transform.forward*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "left":
-				transform.Translate(-BodyParts[0].right*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate(-bodyParts[0].transform.right*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "right":
-				transform.Translate( BodyParts[0].right*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.right*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "up":
-				transform.Translate( BodyParts[0].up*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.up*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			case "down":
-				transform.Translate(-BodyParts[0].up*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate(-bodyParts[0].transform.up*speed*Time.smoothDeltaTime,Space.World);
 			break;
 			default:
-				transform.Translate( BodyParts[0].forward*speed*Time.smoothDeltaTime,Space.World);
+				transform.Translate( bodyParts[0].transform.forward*speed*Time.smoothDeltaTime,Space.World);
 			break;
-		}
+		}	
 
+		//Movimiento de el body del snake 
+		for (int i = 1; i < bodyParts.Count; i++)
+		{
+			Vector3 prevPos= bodyParts[i-1].transform.position;
+			Vector3 currPos= bodyParts[i].transform.position;
+
+			float distancia= Vector3.Distance(prevPos,currPos);
+			//Si la distancia es mayor a la min distancia entre ambos objetos, movemos el objeto.
+			if(distancia>=disEntrabodyParts) 
+			bodyParts[i].transform.position= Vector3.MoveTowards(currPos,prevPos,speed*Time.smoothDeltaTime);
+		}
 	}
 	
 	//añadimos partes a la cola del snake
 	public void AddBodyPart()
 	{
-		Transform newPart=(Instantiate(colaPrefab,BodyParts[BodyParts.Count-1].position, BodyParts[BodyParts.Count-1].rotation) as GameObject).transform;
-		newPart.SetParent(transform);
-		BodyParts.Add(newPart);
+		Vector3 posCurr= bodyParts[bodyParts.Count-1].transform.position;
+		// newPart=(Instantiate(bodyPartsPrefab,posCurr,bodyParts[bodyParts.Count-1].rotation) as GameObject).transform;
+		GameObject newPart=Instantiate(bodyPartsPrefab,posCurr,bodyParts[bodyParts.Count-1].transform.rotation);
+		// newPart.SetParent(transform);
+		bodyParts.Add(newPart);
 	}
 
 	private void changePlane()
 	{
-		
 		switch(CaraController.exitToEnter)
 		{
 			//PLANO MAIN
@@ -248,9 +258,12 @@ public class SnakeMovement : MonoBehaviour {
         if (other.gameObject.CompareTag("PickUp"))
         {
             Destroy(other.gameObject);
-            myGameController.count = myGameController.count + 1;
+            myGameController.count++;
             myGameController.SetCountText();
-            myGameController.numPickUp = myGameController.numPickUp -1;
+            myGameController.numPickUp--;
+
+			//añadimos una parte al body del snake
+			AddBodyPart();
             
         }
         if (other.gameObject.CompareTag("Muerte"))

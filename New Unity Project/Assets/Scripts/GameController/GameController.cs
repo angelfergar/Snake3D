@@ -156,8 +156,8 @@ public class GameController : MonoBehaviour {
 
         Instantiate(pickUp,(spawnPos[spawnPosition]), Quaternion.identity);
         numPickUp = numPickUp + 1;
-        Debug.Log(numPickUp);
-        Debug.Log(spawnPosition);
+        // Debug.Log(numPickUp);
+        // Debug.Log(spawnPosition);
     }
 
     private void OnDrawGizmosSelected() //Área en la que pueden spawnear los PickUp
